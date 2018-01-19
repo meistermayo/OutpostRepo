@@ -57,8 +57,15 @@ public class FPS_Controls : MonoBehaviour {
 		jumpSpeed *= OptionsSettings.playerSpeed_Mult;
 		moveSpeed *= OptionsSettings.playerSpeed_Mult;
 		sprintSpeed *= OptionsSettings.playerSpeed_Mult;
-		audioManager = GetComponent<LocalAudioManager> ();
-		instance = this;
+		audioManager = GetComponent<LocalAudioManager> ();		
+
+		if (instance == null) {
+			instance = this;
+			DontDestroyOnLoad (gameObject);
+		}
+		else
+			DestroyImmediate (gameObject);
+
 		body = GetComponent<Rigidbody> ();
 		animator = GetComponentInChildren<Animator> ();
 		Cursor.lockState = CursorLockMode.Locked;
