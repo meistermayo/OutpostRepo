@@ -3,45 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FPS_Controls : MonoBehaviour {
-	private static FPS_Controls instance;
+	protected static FPS_Controls instance;
 	public static FPS_Controls Instance { get {
 			return instance; } }
 
-	float h,v;
-	float mx,my;
-	bool jumpPressed,jumpHeld;
-	bool firePressed,fireHeld;
-	bool altFirePressed,altFireHeld;
-	bool sprintHeld;
+	protected float h,v;
+	protected float mx,my;
+	protected bool jumpPressed,jumpHeld;
+	protected bool firePressed,fireHeld;
+	protected bool altFirePressed,altFireHeld;
+	protected bool sprintHeld;
 
 	float prevY;
 	public static float maxFallSpeed = -20f;
 
-	bool onGround;
+	protected bool onGround;
 	bool canWallrun;
 
-	Rigidbody body;
-	Animator animator;
-	float cameraYrotation;
+	protected Rigidbody body;
+	protected Animator animator;
+	protected float cameraYrotation;
 
 	[Header("Physics")]
-	[SerializeField] float moveSpeed;
-	[SerializeField] float sprintSpeed;
-	[SerializeField] float accSpeed;
-	[SerializeField] float airAccSpeed;
-	[SerializeField] float jumpSpeed;
+	[SerializeField] protected float moveSpeed;
+	[SerializeField] protected float sprintSpeed;
+	[SerializeField] protected float accSpeed;
+	[SerializeField] protected float airAccSpeed;
+	[SerializeField] protected float jumpSpeed;
 	[Header("Control")]
-	[SerializeField] float mouseSensX;
-	[SerializeField] float mouseSensY;
-	[SerializeField] float zoomMouseSensX;
-	[SerializeField] float zoomMouseSensY;
+	[SerializeField] protected float mouseSensX;
+	[SerializeField] protected float mouseSensY;
+	[SerializeField] protected float zoomMouseSensX;
+	[SerializeField] protected float zoomMouseSensY;
 	[Header("Animation")]
-	[SerializeField] float headBobDepth;
-	[SerializeField] float headBobRate;
-	[SerializeField] float zoomFloat;
-	[SerializeField] float normalFloat;
-	[SerializeField] float sprintFloat;
-	[SerializeField] float fovLerp;
+	[SerializeField] protected float headBobDepth;
+	[SerializeField] protected float headBobRate;
+	[SerializeField] protected float zoomFloat;
+	[SerializeField] protected float normalFloat;
+	[SerializeField] protected float sprintFloat;
+	[SerializeField] protected float fovLerp;
 
 	[SerializeField]bool startWeak;
 	//[Header("Combat")]
@@ -52,7 +52,7 @@ public class FPS_Controls : MonoBehaviour {
 	Vector3 currentGroundNormal;
 	LocalAudioManager audioManager;
 
-	void Start () {
+	protected virtual void Start () {
 		accSpeed *= OptionsSettings.playerSpeed_Mult;
 		jumpSpeed *= OptionsSettings.playerSpeed_Mult;
 		moveSpeed *= OptionsSettings.playerSpeed_Mult;
@@ -89,7 +89,7 @@ public class FPS_Controls : MonoBehaviour {
 		weaponManager.ChangeWeapon (0);
 	}
 
-	void Update()
+	protected virtual void Update()
 	{
 		if (prevY < maxFallSpeed && body.velocity.y == 0f)
 			audioManager.Play (1);
@@ -104,7 +104,7 @@ public class FPS_Controls : MonoBehaviour {
 		Zoom ();
 	}
 
-	void WallRun()
+	protected void WallRun()
 	{
 		body.useGravity = true;
 		if (Physics.Raycast (transform.position, transform.right, 1f)||Physics.Raycast (transform.position, -transform.right, 1f)) 
@@ -131,7 +131,7 @@ public class FPS_Controls : MonoBehaviour {
 			animator.SetBool ("wallrun", false);
 	}
 
-	void GetInput()
+	protected void GetInput()
 	{
 		mx = Input.GetAxis ("Mouse X");
 		my = Input.GetAxis ("Mouse Y");
@@ -146,7 +146,7 @@ public class FPS_Controls : MonoBehaviour {
 		jumpHeld = Input.GetButton ("Jump");
 	}
 
-	void MouseLook()
+	protected void MouseLook()
 	{
 		float xs, ys;
 
@@ -168,7 +168,7 @@ public class FPS_Controls : MonoBehaviour {
 		}
 	}
 		
-	void Walk()
+	protected virtual void Walk()
 	{
 		float saveY = body.velocity.y;
 		body.velocity = new Vector3 (body.velocity.x, 0f, body.velocity.z);
@@ -207,7 +207,7 @@ public class FPS_Controls : MonoBehaviour {
 		CheckSlope ();
 	}
 
-	void Jump()
+	protected virtual void Jump()
 	{
 		CheckGrounded ();
 		if (onGround) {
@@ -219,7 +219,7 @@ public class FPS_Controls : MonoBehaviour {
 		}
 	}
 
-	void Fire()
+	protected void Fire()
 	{
 		if (fireHeld) {
 			Cursor.lockState = CursorLockMode.Locked;
@@ -248,7 +248,7 @@ public class FPS_Controls : MonoBehaviour {
 		return onGround;
 	}
 
-	void CheckDownwardSlope(Vector3 walkDir)
+	protected void CheckDownwardSlope(Vector3 walkDir)
 	{
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position + walkDir + Vector3.up * .1f, Vector3.down, out hit, 1f)) {
@@ -257,7 +257,7 @@ public class FPS_Controls : MonoBehaviour {
 		}
 	}
 
-	void CheckSlope()
+	protected void CheckSlope()
 	{
 		if (!onGround)
 		{
@@ -289,7 +289,7 @@ public class FPS_Controls : MonoBehaviour {
 		Camera.main.fieldOfView = Mathf.Lerp (Camera.main.fieldOfView, amountToZoom, fovLerp);
 	}
 
-	void ChangeWeapon()
+	protected void ChangeWeapon()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 			weaponManager.ChangeWeapon (0);
