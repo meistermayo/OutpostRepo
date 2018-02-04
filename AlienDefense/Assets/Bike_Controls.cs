@@ -35,7 +35,7 @@ public class Bike_Controls : FPS_Controls {
             Vector3 bikeForwardVec = new Vector3(Mathf.Cos(Mathf.Deg2Rad * dirAngle), 0f, Mathf.Sin(Mathf.Deg2Rad * dirAngle));
             if (lastSprint)
             {
-                body.velocity += maxSpeed * 0.5f * bikeForwardVec;
+                body.velocity = maxSpeed * 1f * bikeForwardVec;
                 Camera.main.transform.localRotation = /*Quaternion.Lerp(Camera.main.transform.localRotation, */Quaternion.Euler(new Vector3(Camera.main.transform.localRotation.x, Camera.main.transform.localRotation.y, 0f));//, 0.1f);
             }
             // if (CheckGrounded()) // why doesnt this work

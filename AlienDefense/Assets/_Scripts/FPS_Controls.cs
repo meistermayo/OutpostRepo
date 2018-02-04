@@ -61,10 +61,10 @@ public class FPS_Controls : MonoBehaviour {
 
 		if (instance == null) {
 			instance = this;
-			DontDestroyOnLoad (gameObject);
+			//DontDestroyOnLoad (gameObject);
 		}
-		else
-			DestroyImmediate (gameObject);
+		//else
+		//	DestroyImmediate (gameObject);
 
 		body = GetComponent<Rigidbody> ();
 		animator = GetComponentInChildren<Animator> ();
